@@ -66,6 +66,63 @@
   <script>
     "use strict";
     // Код писать здесь
+    const nameInput = document.querySelector('.add-form-name')
+const commentArea = document.querySelector('.add-form-text')
+const buttonSubmit = document.querySelector('.add-form-button')
+const commentsList = document.querySelector('.comments') // Переменная для списка комментариев
+
+nameInput.addEventListener('input', function() {
+   /// console.log('Имя изменено', nameInput.value)
+})
+
+commentArea.addEventListener('input', function() {
+ ///   console.log('Поле изменено', commentArea.value)
+})
+
+buttonSubmit.addEventListener('click', function() {
+ /*   console.log('Кнопка нажата')
+    console.log('Имя:', nameInput.value)
+    console.log('Комментарий:', commentArea.value) */
+    
+    // Получаем текущую дату и время
+    const now = new Date()
+    const date = now.toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+    }).replace(/\//g, '.')
+    const time = now.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+    const dateTime = `${date} ${time}`
+    
+    // Создаем шаблонную строку нового комментария
+    const newCommentHtml = `
+        <li class="comment">
+            <div class="comment-header">
+                <div>${nameInput.value}</div>
+                <div>${dateTime}</div>
+            </div>
+            <div class="comment-body">
+                <div class="comment-text">
+                    ${commentArea.value}
+                </div>
+            </div>
+            <div class="comment-footer">
+                <div class="likes">
+                    <span class="likes-counter">0</span>
+                    <button class="like-button"></button>
+                </div>
+            </div>
+        </li>
+    `
+    
+    // Добавляем новый комментарий в конец списка
+    commentsList.innerHTML += newCommentHtml
+    nameInput.value = ''
+    commentArea.value = ''
+})
     console.log("It works!");
   </script>
 </html>
