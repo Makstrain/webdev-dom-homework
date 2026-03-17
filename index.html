@@ -9,40 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+       
       </ul>
       <div class="add-form">
         <input
@@ -66,6 +33,147 @@
   <script>
     "use strict";
     // Код писать здесь
+
+    const comments = [
+      {
+
+        name: "Глеб Фокин",
+        date: "12.02.22 12:18",
+        text: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        isLiked: false
+        },
+      {
+            name: 'Варвара Н.',
+            date: '13.02.22 19:22',
+            text: 'Мне нравится как оформлена эта страница! ❤',
+            likes: 75,
+            isLiked: true   // true - лайк поставлен
+        }
+    ];
+
+
+    const nameInput = document.querySelector('.add-form-name')
+    const commentArea = document.querySelector('.add-form-text')
+    const buttonSubmit = document.querySelector('.add-form-button')
+    const commentsList = document.querySelector('.comments') 
+
+function renderComments() {
+let commentsHtml = '';
+  for(let i=0; i < comments.length; i++)
+{
+  const comment = comments[i]; 
+ const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';
+
+commentsHtml += `
+        <li class="comment">
+            <div class="comment-header">
+                <div>${comment.name}</div>
+                <div>${comment.date}</div>
+            </div>
+            <div class="comment-body">
+                <div class="comment-text">
+                    ${comment.text}
+                </div>
+            </div>
+            <div class="comment-footer">
+                <div class="likes">
+                    <span class="likes-counter">${comment.likes}</span>
+                    <button class="${likeButtonClass}"></button>
+                </div>
+            </div>
+        </li>
+    `
+}
+commentsList.innerHTML = commentsHtml;
+  // Обработчики на  кнопки лайков
+  const likeButtons = document.querySelectorAll('.like-button');
+  for(let i = 0; i < likeButtons.length; i++) {
+    likeButtons[i].addEventListener('click', function() {
+      toggleLike(i);
+    });
+  }
+}
+
+
+function validateForm() {
+      if(!nameInput.value.trim())
+    {
+      alert('Введите значение в поле');
+      nameInput.focus();
+      nameInput.style.backgroundColor = 'red';
+      return false;
+    }
+      if(!commentArea.value.trim())
+    {
+      alert('Введите rкоммантарий');
+      commentArea.focus();
+      commentArea.style.backgroundColor = 'red';
+      return false;
+    }
+    return true;
+    }
+
+    // обработчики input для сброса красного фона
+    nameInput.addEventListener('input', function() {
+      nameInput.style.backgroundColor = '';
+    })
+
+    commentArea.addEventListener('input', function() {
+      commentArea.style.backgroundColor = '';
+    })
+  
+function getCurrentDateTime() {
+
+  // Получаем текущую дату и время
+    const now = new Date()
+    const date = now.toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+    }).replace(/\//g, '.')
+    const time = now.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+    return`${date} ${time}`
+}
+
+// Функция для обработки лайков
+function toggleLike(index) {
+  // Меняем состояние лайка на противоположное
+  comments[index].isLiked = !comments[index].isLiked;
+  
+  // Меняем количество лайков
+  if (comments[index].isLiked) {
+    comments[index].likes++;  // Если поставили лайк +1
+  } else {
+    comments[index].likes--;  // Если убрали лайк -1
+  }
+  
+  // Перерисовываем все комментарии
+  renderComments();
+}
+
+buttonSubmit.addEventListener('click', function() {
+  if(!validateForm())
+  {return}
+      
+      const newComment = {
+      name : nameInput.value,
+      date: getCurrentDateTime(),
+      text: commentArea.value,
+      likes: 0,
+      isLiked: false
+        };
+
+    comments.push(newComment);
+     renderComments();
+      nameInput.value = '';
+      commentArea.value = '';
+      
+  })
+renderComments();
     console.log("It works!");
   </script>
 </html>
