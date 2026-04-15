@@ -1,212 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <title>Проект "Комменты"</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+    <head>
+        <title>Проект "Комменты"</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-  <body>
-    <div class="container">
-      <ul class="comments">
-       
-      </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
-        <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+    <body>
+        <div class="container">
+            <ul class="comments"></ul>
+            <div class="add-form">
+                <input
+                    type="text"
+                    class="add-form-name"
+                    placeholder="Введите ваше имя"
+                />
+                <textarea
+                    type="textarea"
+                    class="add-form-text"
+                    placeholder="Введите ваш коментарий"
+                    rows="4"
+                ></textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button">Написать</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </body>
+    </body>
 
-  <script>
-    "use strict";
-    // Код писать здесь
-
-    const comments = [
-      {
-
-        name: "Глеб Фокин",
-        date: "12.02.22 12:18",
-        text: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        isLiked: false
-        },
-      {
-            name: 'Варвара Н.',
-            date: '13.02.22 19:22',
-            text: 'Мне нравится как оформлена эта страница! ❤',
-            likes: 75,
-            isLiked: true   // true - лайк поставлен
-        }
-    ];
-
-
-    const nameInput = document.querySelector('.add-form-name')
-    const commentArea = document.querySelector('.add-form-text')
-    const buttonSubmit = document.querySelector('.add-form-button')
-    const commentsList = document.querySelector('.comments') 
-
-// [hw-3] Функция для экранирования HTML-символов (защита от XSS-атак)
-function escapeHtml(text) {
-  return text
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function renderComments() {
-let commentsHtml = '';
-  for(let i=0; i < comments.length; i++)
-{
-  const comment = comments[i]; 
- const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';
- // [hw-3] Экранируем имя и текст комментария
- const safeName = escapeHtml(comment.name);
- const safeText = escapeHtml(comment.text);
-
-commentsHtml += `
-        <li class="comment" data-index="${i}">  <!-- [НОВОЕ] Добавлен data-index -->
-            <div class="comment-header">
-                <div>${safeName}</div>
-                <div>${comment.date}</div>
-            </div>
-            <div class="comment-body">
-                <div class="comment-text">
-                    ${safeText}
-                </div>
-            </div>
-            <div class="comment-footer">
-                <div class="likes">
-                    <span class="likes-counter">${comment.likes}</span>
-                    <button class="${likeButtonClass}" data-like-index="${i}"></button>  <!-- [НОВОЕ] Добавлен data-like-index -->
-                </div>
-            </div>
-        </li>
-    `
-}
-commentsList.innerHTML = commentsHtml;
-  // Обработчики на кнопки лайков
-  const likeButtons = document.querySelectorAll('.like-button');
-  for(let i = 0; i < likeButtons.length; i++) {
-    likeButtons[i].addEventListener('click', function(event) {
-      event.stopPropagation(); // [hw-3] Останавливаем всплытие события
-      const index = parseInt(this.getAttribute('data-like-index')); // Получаем индекс
-      toggleLike(index);
-    });
-  }
-  
-  // [hw-3] Обработчики на комментарии для цитирования
-  const commentElements = document.querySelectorAll('.comment');
-  for(let i = 0; i < commentElements.length; i++) {
-    commentElements[i].addEventListener('click', function(event) {
-      // Проверяем, что клик был не по кнопке лайка
-      if(!event.target.classList.contains('like-button')) {
-        quoteComment(i);
-      }
-    });
-  }
-}
-
-// [hw-3] Функция для цитирования комментария
-function quoteComment(index) {
-  const comment = comments[index];
-  nameInput.value = comment.name;
-  commentArea.value = `> ${comment.text}\n\n`;
-  commentArea.focus();
-}
-
-function validateForm() {
-      if(!nameInput.value.trim())
-    {
-      alert('Введите значение в поле');
-      nameInput.focus();
-      nameInput.style.backgroundColor = 'red';
-      return false;
-    }
-      if(!commentArea.value.trim())
-    {
-      alert('Введите rкоммантарий');
-      commentArea.focus();
-      commentArea.style.backgroundColor = 'red';
-      return false;
-    }
-    return true;
-    }
-
-    // обработчики input для сброса красного фона
-    nameInput.addEventListener('input', function() {
-      nameInput.style.backgroundColor = '';
-    })
-
-    commentArea.addEventListener('input', function() {
-      commentArea.style.backgroundColor = '';
-    })
-  
-function getCurrentDateTime() {
-
-  // Получаем текущую дату и время
-    const now = new Date()
-    const date = now.toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit'
-    }).replace(/\//g, '.')
-    const time = now.toLocaleTimeString('ru-RU', {
-        hour: '2-digit',
-        minute: '2-digit'
-    })
-    return`${date} ${time}`
-}
-
-// Функция для обработки лайков
-function toggleLike(index) {
-  // Меняем состояние лайка на противоположное
-  comments[index].isLiked = !comments[index].isLiked;
-  
-  // Меняем количество лайков
-  if (comments[index].isLiked) {
-    comments[index].likes++;  // Если поставили лайк +1
-  } else {
-    comments[index].likes--;  // Если убрали лайк -1
-  }
-  
-  // Перерисовываем все комментарии
-  renderComments();
-}
-
-buttonSubmit.addEventListener('click', function() {
-  if(!validateForm())
-  {return}
-      
-      const newComment = {
-      name : nameInput.value,
-      date: getCurrentDateTime(),
-      text: commentArea.value,
-      likes: 0,
-      isLiked: false
-        };
-
-    comments.push(newComment);
-     renderComments();
-      nameInput.value = '';
-      commentArea.value = '';
-      
-  })
-renderComments();
-    console.log("It works!");
-  </script>
+    <script type="module" src="./script.js">
+        'use strict'
+        // Код писать здесь
+    </script>
 </html>
