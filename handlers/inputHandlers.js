@@ -1,4 +1,4 @@
-import { resetInputStyles } from '../utils/validateForm.js'
+import { resetInputStyles } from '../validateForm.js'
 
 export function initInputHandlers(nameInput, commentArea) {
     nameInput.addEventListener('input', () =>

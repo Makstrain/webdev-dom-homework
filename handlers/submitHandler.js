@@ -1,5 +1,5 @@
 import { getCurrentDateTime } from '../utils/getCurrentDate.js'
-import { renderComments } from '../utils/renderComments.js'
+import { renderComments } from '../renderComments.js'
 
 export function initSubmitHandler(
     buttonSubmit,
