@@ -1,8 +1,8 @@
-import { comments } from './data.js'
-import { renderComments } from './renderComments.js'
+import { comments } from './data/data.js'
+import { renderComments } from './modules/renderComments.js'
 import { getCurrentDateTime } from './utils/getCurrentDate.js'
-import { validateForm, resetInputStyles } from './validateForm.js'
-import { toggleLike } from './toggleLike.js'
+import { validateForm, resetInputStyles } from './modules/validateForm.js'
+import { toggleLike } from './modules/toggleLike.js'
 import { initInputHandlers } from './handlers/inputHandlers.js'
 import { initSubmitHandler } from './handlers/submitHandler.js'
 
