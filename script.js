@@ -1,4 +1,5 @@
-import { comments } from './data/data.js'
+///import { comments } from './data/data.js'
+import { comments, fetchComments } from './data/data.js'
 import { renderComments } from './modules/renderComments.js'
 import { getCurrentDateTime } from './utils/getCurrentDate.js'
 import { validateForm, resetInputStyles } from './modules/validateForm.js'
@@ -12,6 +13,7 @@ const buttonSubmit = document.querySelector('.add-form-button')
 const commentsList = document.querySelector('.comments')
 
 // Инициализация обработчиков
+
 initInputHandlers(nameInput, commentArea)
 
 function handleLike(index) {
@@ -29,5 +31,9 @@ initSubmitHandler(
     validateForm,
 )
 
-renderComments(comments, commentsList, handleLike, nameInput, commentArea)
+fetchComments().then(() => {
+    renderComments(comments, commentsList, handleLike, nameInput, commentArea) // ← первый рендер (после загрузки API)
+})
+
+///renderComments(comments, commentsList, handleLike, nameInput, commentArea)
 console.log('It works!')
