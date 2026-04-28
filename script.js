@@ -13,7 +13,6 @@ const buttonSubmit = document.querySelector('.add-form-button')
 const commentsList = document.querySelector('.comments')
 
 // Инициализация обработчиков
-
 initInputHandlers(nameInput, commentArea)
 
 function handleLike(index) {
@@ -32,7 +31,7 @@ initSubmitHandler(
 )
 
 fetchComments().then(() => {
-    renderComments(comments, commentsList, handleLike, nameInput, commentArea) // ← первый рендер (после загрузки API)
+    renderComments(comments, commentsList, handleLike, nameInput, commentArea) // первый рендер (после загрузки API)
 })
 
 ///renderComments(comments, commentsList, handleLike, nameInput, commentArea)
