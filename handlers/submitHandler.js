@@ -3,6 +3,7 @@ import { renderComments } from '../modules/renderComments.js'
 import { validateForm, resetInputStyles } from '../modules/validateForm.js'
 import { replaceWithMessage } from '../utils/replaceWithMessage.js'
 import { delay } from '../utils/delay.js'
+import { showErrorToUser } from '../utils/errorHandling.js'
 
 export function initSubmitHandler({
     button,
@@ -14,7 +15,10 @@ export function initSubmitHandler({
     onSuccess,
 }) {
     button.addEventListener('click', () => {
-        if (!validateForm(nameInput, commentArea)) {
+        try {
+            validateForm(nameInput, commentArea)
+        } catch (error) {
+            showErrorToUser(error)
             return
         }
 
@@ -22,9 +26,6 @@ export function initSubmitHandler({
             name: nameInput.value,
             text: commentArea.value,
         }
-
-        //    button.disabled = true
-        //    button.textContent = 'Отправка...'
 
         const loadingSubmit = replaceWithMessage(
             '.add-form',
@@ -46,18 +47,11 @@ export function initSubmitHandler({
                 nameInput.value = ''
                 commentArea.value = ''
                 resetInputStyles(nameInput, commentArea)
-                button.disabled = false
-                button.textContent = 'Написать'
             })
             .catch((error) => {
                 console.error('Ошибка:', error)
-                loadingSubmit.updateText('Ошибка при отправке')
-                return delay(2000).then(() => {
-                    loadingSubmit.restore()
-                    alert('Не удалось добавить комментарий. Попробуйте позже.')
-                    button.disabled = false
-                    button.textContent = 'Написать'
-                })
+                loadingSubmit.restore()
+                showErrorToUser(error)
             })
     })
 }

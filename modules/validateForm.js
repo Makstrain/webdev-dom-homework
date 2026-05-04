@@ -1,19 +1,24 @@
 export function validateForm(nameInput, commentArea) {
-    if (!nameInput.value.trim()) {
-        alert('Введите значение в поле')
-        nameInput.focus()
-        nameInput.style.backgroundColor = 'red'
-        return false
+    const name = nameInput.value.trim()
+    const text = commentArea.value.trim()
+
+    // Сброс стилей
+    nameInput.style.backgroundColor = ''
+    commentArea.style.backgroundColor = ''
+
+    if (name.length < 3 || text.length < 3) {
+        if (name.length < 3) {
+            nameInput.style.backgroundColor = 'red'
+        }
+        if (text.length < 3) {
+            commentArea.style.backgroundColor = 'red'
+        }
+        throw new Error('BAD_COMMENT')
     }
-    if (!commentArea.value.trim()) {
-        alert('Введите rкоммантарий')
-        commentArea.focus()
-        commentArea.style.backgroundColor = 'red'
-        return false
-    }
+
     return true
 }
-// обработчики input для сброса красного фона
+
 export function resetInputStyles(nameInput, commentArea) {
     nameInput.style.backgroundColor = ''
     commentArea.style.backgroundColor = ''

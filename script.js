@@ -8,6 +8,8 @@ import { initSubmitHandler } from './handlers/submitHandler.js'
 import { toggleLike } from './modules/toggleLike.js'
 import { delay } from './utils/delay.js'
 import { replaceWithMessage } from './utils/replaceWithMessage.js'
+import { showErrorToUser } from './utils/errorHandling.js'
+import { resetInputStyles } from './modules/validateForm.js'
 
 const nameInput = document.querySelector('.add-form-name')
 const commentArea = document.querySelector('.add-form-text')
@@ -20,6 +22,16 @@ function fullRender() {
     attachLikeHandlers(comments, fullRender)
     attachQuoteHandlers(comments, commentArea, fullRender)
 }
+
+// ✅ Добавляем обработчики для сброса красного фона при вводе
+nameInput.addEventListener('input', () => {
+    console.log('⌨️ input на name')
+    resetInputStyles(nameInput, commentArea)
+})
+
+commentArea.addEventListener('input', () => {
+    resetInputStyles(nameInput, commentArea)
+})
 
 const loadingComments = replaceWithMessage(
     '.comments',
@@ -37,10 +49,8 @@ fetchComments()
     })
     .catch((error) => {
         console.error('Ошибка загрузки комментариев:', error)
-        loadingComments.updateText('Ошибка загрузки комментариев')
-        return delay(3000).then(() => {
-            loadingComments.restore()
-        })
+        loadingComments.restore()
+        showErrorToUser(error)
     })
 
 initSubmitHandler({
