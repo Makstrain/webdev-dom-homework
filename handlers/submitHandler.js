@@ -4,6 +4,7 @@ import { validateForm, resetInputStyles } from '../modules/validateForm.js'
 import { replaceWithMessage } from '../utils/replaceWithMessage.js'
 import { delay } from '../utils/delay.js'
 import { showErrorToUser } from '../utils/errorHandling.js'
+import { isAuthenticated } from '../modules/auth.js'
 
 export function initSubmitHandler({
     button,
@@ -15,6 +16,11 @@ export function initSubmitHandler({
     onSuccess,
 }) {
     button.addEventListener('click', () => {
+        if (!isAuthenticated()) {
+            showErrorToUser(new Error('UNAUTHORIZED'))
+            return
+        }
+
         try {
             validateForm(nameInput, commentArea)
         } catch (error) {
@@ -22,8 +28,12 @@ export function initSubmitHandler({
             return
         }
 
-        const newComment = {
+        /*  const newComment = {
             name: nameInput.value,
+            text: commentArea.value,
+        } */
+
+        const newComment = {
             text: commentArea.value,
         }
 

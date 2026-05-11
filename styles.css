@@ -153,3 +153,91 @@ body {
 .-loading-like {
     animation: rotating 2s linear infinite;
 }
+/* Стили для страницы логина */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-modal {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+
+.login-title {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.login-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #5a67d8;
+}
+
+.login-back-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.login-back-btn:hover {
+    background: #e0e0e0;
+}
+
+.login-error {
+    color: red;
+    margin-bottom: 12px;
+    text-align: center;
+}
+/* Кнопка выхода */
+.logout-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.logout-button:hover {
+    background: #ee5a6f;
+}
